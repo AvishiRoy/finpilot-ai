@@ -15,12 +15,15 @@ class Settings(BaseSettings):
     app_env: str = "development"
     debug: bool = True
 
+    # No default value here on purpose: if DATABASE_URL is missing from
+    # the environment, Settings() will raise a validation error at startup
+    # rather than letting the app run with no database connection at all.
+    database_url: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
     )
 
 
-# A single, shared instance imported everywhere config is needed.
-# This avoids re-reading and re-validating the .env file in multiple places.
 settings = Settings()

@@ -2,6 +2,8 @@ from fastapi import FastAPI
 
 from app.core.config import settings
 
+from app.api.user import router as user_router
+
 # The FastAPI app instance is the core of the application.
 # title/version here automatically populate the Swagger UI at /docs.
 app = FastAPI(
@@ -9,7 +11,7 @@ app = FastAPI(
     version="0.1.0",
     debug=settings.debug,
 )
-
+app.include_router(user_router)
 
 @app.get("/", tags=["root"])
 def read_root() -> dict:
