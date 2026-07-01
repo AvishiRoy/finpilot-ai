@@ -30,11 +30,11 @@ class UserService:
         if existing:
             raise ValueError(f"Email {data.email} is already registered.")
         
-        print(data.password)
+        """print(data.password)
         print(len(data.password))
 
         print("PASSWORD =", data.password)
-        print("LENGTH =", len(data.password))
+        print("LENGTH =", len(data.password))"""
 
         hashed = hash_password(data.password)
         return self.repository.create(

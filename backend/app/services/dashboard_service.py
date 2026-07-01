@@ -60,3 +60,40 @@ class DashboardService:
                 for b in budget_status if b["is_over_budget"]
             ],
         }
+    
+    def get_net_worth(self, user_id: int) -> dict:
+        """
+        Calculates net worth from all-time transaction history.
+        Total income received minus total expenses paid = net position.
+        This is a simplified net worth — future versions will add
+        investment values and loan balances as separate models.
+        """
+        from sqlalchemy import func
+        from app.models.transaction import Transaction
+
+        results = (
+            self.tx_repo.db.query(
+                Transaction.type,
+                func.sum(Transaction.amount).label("total")
+            )
+            .filter(Transaction.user_id == user_id)
+            .group_by(Transaction.type)
+            .all()
+        )
+
+        totals = {"income": 0.0, "expense": 0.0}
+        for row in results:
+            totals[row.type] = float(row.total)
+
+        net_worth = round(totals["income"] - totals["expense"], 2)
+
+        return {
+            "lifetime_income": totals["income"],
+            "lifetime_expenses": totals["expense"],
+            "net_worth": net_worth,
+            "financial_health": (
+                "positive" if net_worth > 0
+                else "negative" if net_worth < 0
+                else "neutral"
+            ),
+        }

@@ -23,3 +23,15 @@ def get_dashboard(
     """
     service = DashboardService(TransactionRepository(db), BudgetRepository(db))
     return service.get_dashboard(current_user.id)
+
+@router.get("/net-worth", response_model=dict)
+def get_net_worth(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Returns a lifetime net worth snapshot for the authenticated user.
+    Used by the AI to assess overall financial health.
+    """
+    service = DashboardService(TransactionRepository(db), BudgetRepository(db))
+    return service.get_net_worth(current_user.id)

@@ -18,4 +18,11 @@ class User(Base):
     transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
 
     budgets = relationship("Budget", cascade="all, delete-orphan")
+    profile = relationship(
+        "UserProfile",
+        back_populates="user",
+        uselist=False,       # one-to-one: user.profile returns an object, not a list
+        cascade="all, delete-orphan",
+    )
 
+    goals = relationship("Goal", back_populates="user", cascade="all, delete-orphan")

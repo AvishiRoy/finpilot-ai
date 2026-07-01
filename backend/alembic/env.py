@@ -12,6 +12,10 @@ from app.models.transaction import Transaction
 
 from app.models.budget import Budget  # add this line
 
+from app.models.user_profile import UserProfile   # add this line
+
+from app.models.goal import Goal   # add this line
+
 config = context.config
 
 config.set_main_option("sqlalchemy.url", settings.database_url)

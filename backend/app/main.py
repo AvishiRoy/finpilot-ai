@@ -7,6 +7,8 @@ from app.api import user, auth, categories, transactions, budgets, dashboard
 from app.repositories.category_repository import CategoryRepository
 from app.db.session import SessionLocal
 
+from app.api import user, auth, categories, transactions, budgets, dashboard, profile, goals, recurring, ai_context
+
 
 # Create FastAPI app FIRST
 app = FastAPI(
@@ -35,6 +37,15 @@ app.include_router(categories.router, prefix="/api")
 app.include_router(transactions.router, prefix="/api")
 app.include_router(budgets.router, prefix="/api")
 app.include_router(dashboard.router, prefix="/api")
+
+app.include_router(profile.router, prefix="/api")
+
+app.include_router(goals.router, prefix="/api")
+
+app.include_router(recurring.router, prefix="/api")
+
+app.include_router(ai_context.router, prefix="/api")
+
 
 
 @app.get("/", tags=["root"])
