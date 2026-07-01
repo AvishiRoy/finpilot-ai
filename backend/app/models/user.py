@@ -1,12 +1,14 @@
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.sql import func
 from app.db.base import Base
-
 
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    full_name: Mapped[str] = mapped_column(String(100))
-    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String(100))
+    email = Column(String(255), unique=True, index=True)
+    hashed_password = Column(String, nullable=False, server_default="")
+
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

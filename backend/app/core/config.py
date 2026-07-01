@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     # No default value here on purpose: if DATABASE_URL is missing from
     # the environment, Settings() will raise a validation error at startup
     # rather than letting the app run with no database connection at all.
+    secret_key: str
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
+
     database_url: str
 
     model_config = SettingsConfigDict(
