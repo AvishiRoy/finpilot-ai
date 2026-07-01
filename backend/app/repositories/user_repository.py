@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.schemas.user import UserCreate
+from app.schemas import user
 
 
 class UserRepository:
@@ -37,3 +38,26 @@ class UserRepository:
     
     def get_by_email(self, email: str) -> User | None:
         return self.db.query(User).filter(User.email == email).first()
+        
+
+    def update(self, user: User, data: dict) -> User:
+        """
+        Update an existing user and save changes.
+        """
+        if "full_name" in data:
+            user.full_name = data["full_name"]
+
+        if "email" in data:
+            user.email = data["email"]
+
+        self.db.commit()
+        self.db.refresh(user)
+        return user
+
+
+    def delete(self, user: User) -> None:
+        """
+        Delete an existing user.
+        """
+        self.db.delete(user)
+        self.db.commit()

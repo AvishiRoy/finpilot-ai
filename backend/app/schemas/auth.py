@@ -3,8 +3,15 @@ from pydantic import BaseModel, EmailStr
 
 class LoginRequest(BaseModel):
     """
-    Credentials submitted by the user at login.
-    Email and password — nothing else.
+    JSON-body login schema.
+
+    Not used by the Swagger Authorize flow (which requires form encoding
+    per the OAuth2 spec), but retained for:
+    - Direct API clients (mobile apps, curl with -H 'Content-Type: application/json')
+    - Integration tests that POST JSON
+    - Documentation of the expected credential shape
+
+    If you add a separate JSON login endpoint in future, use this schema there.
     """
     email: EmailStr
     password: str
@@ -12,12 +19,10 @@ class LoginRequest(BaseModel):
 
 class TokenResponse(BaseModel):
     """
-    Response returned after successful login.
+    Response returned after successful authentication.
 
-    access_token: the signed JWT the client stores and sends on
-                  subsequent requests via Authorization: Bearer header.
-    token_type:   always "bearer" — this is the OAuth2 convention that
-                  tells clients how to use the token.
+    access_token: signed JWT the client sends as 'Authorization: Bearer <token>'
+    token_type:   always 'bearer' — the OAuth2 convention for this token format
     """
     access_token: str
     token_type: str = "bearer"
