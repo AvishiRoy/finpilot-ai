@@ -7,6 +7,11 @@ from app.core.config import settings
 from app.db.base import Base
 from app.models.user import User
 
+from app.models.category import Category  
+from app.models.transaction import Transaction  
+
+from app.models.budget import Budget  # add this line
+
 config = context.config
 
 config.set_main_option("sqlalchemy.url", settings.database_url)
